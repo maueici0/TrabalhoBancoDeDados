@@ -1,0 +1,47 @@
+.bloco-conteudo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+    overflow: auto;
+}
+
+.ocorrencia {
+    height: 70px;
+    margin: 0px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bloco {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    gap: 5px;
+}
+
+.bloco > * {
+    margin: 0;
+    padding: 0;
+}
+
+.data{
+    align-items: center;
+}
+
+.hora-ocorrencia {
+    font-size: 0.9rem;
+}
+
+.titulo-ocorrencia {
+    font-weight: bold;
+}
+
+.tipo-ocorrencia {
+    font-size: 0.9rem;
+    padding-left: 15px;
+}
+

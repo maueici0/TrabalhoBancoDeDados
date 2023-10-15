@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+
+<head>
+  <title>Sistema de Registro de Ocorrências</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+  <link rel="stylesheet" type="text/css" href="../css/main.css" />
+  <link rel="stylesheet" type="text/css" href="../css/ocorrencias.css" />
+  <script type="module" src="../script/maps.js"></script>
+</head>
+
+<body>
+
+  <div class="main">
+    <h1>Sistema de Registro de Ocorrências</h1>
+
+    <div class="bloco-conteudo">
+
+      <div class="ocorrencia">
+        <div class="bloco info">
+          <p class="titulo-ocorrencia">Ocorrencia #1</p>
+          <p class="tipo-ocorrencia">Assalto</p>
+        </div>
+        <div class="bloco data">
+          <p class="data-ocorrencia">11/03/2024</p>
+          <p class="hora-ocorrencia">16:30</p>
+        </div>
+      </div>
+
+    </div>
+
+    <a href="../html/registrar.html"><button id="botao-pagina">Registrar Ocorrencia</button></a>
+
+  </div>
+
+
+  <div id="map"></div>
+
+  <script src="https://maps.googleapis.com/maps/api/js?callback=initMap&v=weekly" defer></script>
+</body>
+
+</html>
