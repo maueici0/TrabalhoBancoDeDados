@@ -1,0 +1,52 @@
+.bloco-conteudo {
+    width: 430px;
+}
+
+.formulario-ocorrencia {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.texto-form {
+    padding-left: 20px;
+    font-weight: bold;
+}
+
+.texto-mapa{
+    margin: 10px 0px;
+}
+
+.campo-form {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    height: 35px;
+    margin: 0;
+}
+
+#hora-ocorrencia, #data-ocorrencia {
+    text-align: center;
+}
+
+#botao-enviar {
+    box-sizing: border-box;
+    padding: 5px 30px;
+    height: 35px;
+    background: #919191;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    transition: 0.5s;
+    align-self: center;
+}
+
+#botao-enviar:hover {
+    background: #afabab;
+    transition: 0.5s;
+}

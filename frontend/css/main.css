@@ -24,6 +24,10 @@ body {
     overflow: hidden;
 }
 
+h1 {
+    margin: 0;
+}
+
 .bloco-conteudo {
     box-sizing: border-box;
     height: 380px;
