@@ -4,8 +4,8 @@ module.exports.salvarOcorrencia = async function (req, res){
     const tipo = req.body.tipo;
     const data = new Date(req.body.data);
     const hora = req.body.hora;
-    const longitude = req.body.longitude;
-    const latitude = req.body.latitude;
+    const longitude = req.body.localizacao[0];
+    const latitude = req.body.localizacao[1];
     try{
       await Ocorrencia.create({
         titulo: titulo,

@@ -45,3 +45,26 @@
     padding-left: 15px;
 }
 
+.infoWindow-Titulo {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+}
+.infoWindow-Titulo > h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.infoWindow {
+    margin: 0;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.infoWindow > * {
+    margin: 0;
+    padding: 0;
+}
+
