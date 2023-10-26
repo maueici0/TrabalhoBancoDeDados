@@ -26,4 +26,4 @@
 <p><a href= "https://github.com/maueici0">Maurício Bernardo</a></p>
 <h2>🙏 - Agradecimentos</h2>
 <p>Gostaríamos de estender nossos sinceros agradecimentos ao Professor Paulo Git por sua orientação, conhecimento e apoio durante o desenvolvimento deste projeto como parte da disciplina de Banco de Dados 2.</p>
-<p>Agradecemos também aos nossos Colegas Gabriela, Maria Clara e Mikael por nos aguentar tirando nossas dúvidas sempre que lhe pedíamos, não conseguiríamos sem vocês.💖</p>
+<p>Agradecemos também aos nossos Colegas Gabriella, Maria Clara e Mikael por nos aguentar tirando nossas dúvidas sempre que lhe pedíamos, não conseguiríamos sem vocês.💖</p>
