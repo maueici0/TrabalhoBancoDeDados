@@ -1,27 +1,32 @@
-const Ocorrencia = require("../model/Ocorrencia")
+const Ocorrencia = require('../model/Ocorrencia');
+
+module.exports.listarOcorrencia = async function (req, res){
+  const ocorrencias = await Ocorrencia.find({});
+  res.status(200).send(ocorrencias);
+};
+
 module.exports.salvarOcorrencia = async function (req, res){
-    const titulo = req.body.titulo;
-    const tipo = req.body.tipo;
-    const data = new Date(req.body.data);
-    const hora = req.body.hora;
-    const longitude = req.body.localizacao[0];
-    const latitude = req.body.localizacao[1];
-    try{
-      await Ocorrencia.create({
-        titulo: titulo,
-        tipo: tipo,
-        data: data,
-        hora: hora,
-        localizacao: {type:"Point", 
-                      coordinates:[longitude,latitude]
-                      }       
-      });
-      res.status(201).send('Salvo');
-    }catch{
-      res.status(400).send('Falha ao salvar');
-    };
-  };
-module.exports.listarOcorrencia = async function(req, res){
-  const listaOcorrencias = await Ocorrencia.findAll();
-  res.send(listaOcorrencias)
+  const ocorrencia = await Ocorrencia.create(req.body);
+  res.status(201).send(ocorrencia);
+};
+
+module.exports.deletarOcorrencia = async function (req, res){
+  const ocorrencia = await Ocorrencia.findByIdAndDelete(req.params.id);
+  if (!ocorrencia) {
+    res.status(404).send({error: "Ocorrencia não encontrada"});
+    return;
+  }
+  await ocorrencia.findByIdAndDelete(req.params.id);
+  res.status(200).send({message: "Ocorrencia deletada com sucesso"});
+};
+
+module.exports.atualizarOcorrencia = async function (req, res){
+  const ocorrencia = await Ocorrencia.findById(req.params.id);
+  if (!ocorrencia) {
+    res.status(404).send({error: "Ocorrencia não encontrada"});
+    return;
+  }
+  const retorno = await ocorrencia.findByIdAndUpdate(
+    req.params.id, req.body, {new: true});
+  res.status(200).send(retorno);
 }
