@@ -37,9 +37,7 @@ async function salvar() {
     let dataLocal = new Date(document.getElementById('data-ocorrencia').value);
     const dataUTC = new Date(dataLocal.getTime() - dataLocal.getTimezoneOffset() * 60000);
 
-
     console.log(dataUTC);
-
 
     const obj = {
         titulo: document.getElementById('titulo-ocorrencia').value,

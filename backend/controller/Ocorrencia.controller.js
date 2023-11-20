@@ -16,7 +16,6 @@ module.exports.deletarOcorrencia = async function (req, res){
     res.status(404).send({error: "Ocorrencia não encontrada"});
     return;
   }
-  await ocorrencia.findByIdAndDelete(req.params.id);
   res.status(200).send({message: "Ocorrencia deletada com sucesso"});
 };
 

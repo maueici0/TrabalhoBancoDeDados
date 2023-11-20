@@ -12,7 +12,7 @@ async function obterPontos() {
             const data = dataHora.toISOString().split('T')[0];
             const hora = dataHora.toISOString().split('T')[1].split('.')[0].substring(0, 5);
             return {
-                id: elemento.id,
+                id: elemento._id,
                 titulo: elemento.titulo,
                 tipo: elemento.tipo,
                 data: data,
@@ -33,7 +33,6 @@ function criarElementos() {
 
     Array.from(blocoConteudo).forEach((blocoConteudo) => {
         pontos.forEach(element => {
-
             let data = new Date(element.data);
             data.setDate(data.getDate() + 1);
 
@@ -58,7 +57,7 @@ function criarElementos() {
 
             const dataOcorrencia = document.createElement('p');
             dataOcorrencia.classList.add('data-ocorrencia');
-            dataOcorrencia.textContent = ((data.getDate() )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear();;
+            dataOcorrencia.textContent = ((data.getDate())) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear();;
 
             const horaOcorrencia = document.createElement('p');
             horaOcorrencia.classList.add('hora-ocorrencia');
@@ -90,6 +89,24 @@ function criarElementos() {
             divOcorrencia.appendChild(blocoBotoes);
 
             blocoConteudo.appendChild(divOcorrencia);
+
+            botaoExcluirOcorrencia.addEventListener("click", () => {
+
+                const id = element.id;
+                const url = `http://localhost:3000/ocorrencias/${id}`;
+
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                }).then(response => {
+                    alert('Excluido com sucesso');
+                    location.reload()
+                })
+                    .catch(error => alert('Falha ao excluir!'));
+
+            });
         });
     });
 }
@@ -110,10 +127,10 @@ function listarPontos() {
         (function () {
 
             let contentString = '<div class="infoWindow">' +
-                '<h1 id="firstHeading" class="infoWindow-Titulo">'+ element.titulo+ '</h1>' +
+                '<h1 id="firstHeading" class="infoWindow-Titulo">' + element.titulo + '</h1>' +
                 '<div class="infoWindow-body">' +
-                '<p>'+element.tipo+ ', <span class="infoWindow-data">'
-                + element.data + ' ' + element.hora+'</span></p>' +
+                '<p>' + element.tipo + ', <span class="infoWindow-data">'
+                + element.data + ' ' + element.hora + '</span></p>' +
                 '</div>' +
                 '</div>';
 
