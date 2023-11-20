@@ -43,10 +43,13 @@ async function salvar() {
         tipo: document.getElementById('tipo-ocorrencia').value,
         data: data,
         hora: document.getElementById('hora-ocorrencia').value,
-        localizacao: [
-            markerLat,
-            markerLng
-        ]
+        localizacao: {
+            type: "Point",
+            coordinates: [
+                markerLng,
+                markerLat
+            ]
+        }
 
     };
     fetch("http://localhost:3000/ocorrencias", {

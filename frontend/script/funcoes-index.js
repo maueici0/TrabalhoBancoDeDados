@@ -7,12 +7,16 @@ async function obterPontos() {
         const response = await fetch('http://localhost:3000/ocorrencias');
         const data = await response.json();
         pontos = data.map(function (elemento) {
+            console.log(elemento);
+            const dataHora = new Date(elemento.data);
+            const data = dataHora.toISOString().split('T')[0];
+            const hora = dataHora.toISOString().split('T')[1].split('.')[0].substring(0, 5);
             return {
                 id: elemento.id,
                 titulo: elemento.titulo,
                 tipo: elemento.tipo,
-                data: elemento.data,
-                hora: elemento.hora,
+                data: data,
+                hora: hora,
                 localizacao: {
                     lat: elemento.localizacao.coordinates[0],
                     lng: elemento.localizacao.coordinates[1],
