@@ -1,5 +1,3 @@
-const center = { lat: -6.727427043380443, lng: -38.449082137663765 };
-let map;
 let pontos = [];
 
 async function obterPontos() {
@@ -7,7 +5,6 @@ async function obterPontos() {
         const response = await fetch('http://localhost:3000/ocorrencias');
         const data = await response.json();
         pontos = data.map(function (elemento) {
-            console.log(elemento);
             const dataHora = new Date(elemento.data);
             const data = dataHora.toISOString().split('T')[0];
             const hora = dataHora.toISOString().split('T')[1].split('.')[0].substring(0, 5);
@@ -111,54 +108,26 @@ function criarElementos() {
     });
 }
 
-function listarPontos() {
-    var marker = new google.maps.Marker({
-        map: map,
-        animation: google.maps.Animation.DROP,
-    });
+const botaoMudar = document.getElementById("botao-mudar");
 
-    pontos.forEach(element => {
-        var marker = new google.maps.Marker({
-            title: element.titulo,
-            position: new google.maps.LatLng(element.localizacao.lat, element.localizacao.lng),
-            map: map
-        });
+botaoMudar.addEventListener("click", () => {
 
-        (function () {
+    if (mapaCalor.style.display === "none") {
+        mapaCalor.style.display = "inline";
+        mapaNormal.style.display = "none";
+    }
+    else {
+        mapaCalor.style.display = "none";
+        mapaNormal.style.display = "inline";
+    }
 
-            let contentString = '<div class="infoWindow">' +
-                '<h1 id="firstHeading" class="infoWindow-Titulo">' + element.titulo + '</h1>' +
-                '<div class="infoWindow-body">' +
-                '<p>' + element.tipo + ', <span class="infoWindow-data">'
-                + element.data + ' ' + element.hora + '</span></p>' +
-                '</div>' +
-                '</div>';
+});
 
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString
-            });
-
-            marker.addListener('click', function () {
-                infowindow.open(map, marker);
-            });
-        })();
-    });
-}
+const mapaNormal = document.getElementById("map-normal");
+const mapaCalor = document.getElementById("map-calor");
 
 window.addEventListener('load', async () => {
     await obterPontos();
     criarElementos();
-    listarPontos();
+    mapaCalor.style.display = "none";
 });
-
-function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-        center,
-        zoom: 16,
-        minZoom: 14,
-        maxZoom: 18,
-        disableDefaultUI: true,
-    });
-}
-
-window.initMap = initMap;
