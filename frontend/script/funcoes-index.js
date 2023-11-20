@@ -7,7 +7,6 @@ async function obterPontos() {
         const response = await fetch('http://localhost:3000/ocorrencias');
         const data = await response.json();
         pontos = data.map(function (elemento) {
-            console.log(elemento);
             return {
                 id: elemento.id,
                 titulo: elemento.titulo,
@@ -61,6 +60,21 @@ function criarElementos() {
             horaOcorrencia.classList.add('hora-ocorrencia');
             horaOcorrencia.textContent = element.hora;
 
+            const blocoBotoes = document.createElement('div');
+            blocoBotoes.classList.add('bloco');
+            blocoBotoes.classList.add('botoes');
+
+            const botaoAtualizarOcorrencia = document.createElement('button');
+            botaoAtualizarOcorrencia.classList.add('botao-ocorrencia');
+            botaoAtualizarOcorrencia.textContent = "Atualizar";
+
+            const botaoExcluirOcorrencia = document.createElement('button');
+            botaoExcluirOcorrencia.classList.add('botao-ocorrencia');
+            botaoExcluirOcorrencia.textContent = "Excluir";
+
+            blocoBotoes.appendChild(botaoAtualizarOcorrencia);
+            blocoBotoes.appendChild(botaoExcluirOcorrencia);
+
             blocoData.appendChild(dataOcorrencia);
             blocoData.appendChild(horaOcorrencia);
 
@@ -69,6 +83,7 @@ function criarElementos() {
 
             divOcorrencia.appendChild(blocoInfo);
             divOcorrencia.appendChild(blocoData);
+            divOcorrencia.appendChild(blocoBotoes);
 
             blocoConteudo.appendChild(divOcorrencia);
         });
