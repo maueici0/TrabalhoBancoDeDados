@@ -45,6 +45,25 @@
     padding-left: 15px;
 }
 
+.botao-ocorrencia {
+    box-sizing: border-box;
+    padding: 5px 15px;
+    background: #919191;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: .9rem;
+    border: none;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.botao-ocorrencia:hover {
+    background: #afabab;
+    transition: 0.5s;
+}
+
 .infoWindow-Titulo {
     font-size: 1rem;
     font-weight: bold;
