@@ -28,6 +28,11 @@
     padding: 0;
 }
 
+.info {
+    max-width: 120px;
+    min-width: 120px;
+}
+
 .data{
     align-items: center;
 }

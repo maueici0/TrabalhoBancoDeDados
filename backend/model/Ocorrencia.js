@@ -3,10 +3,6 @@ const {Schema} = mongoose;
 const {v4: uuidv4} = require('uuid');
 
 const ocorrenciaSchema = new Schema({
-    _id: {
-        type: String,
-        default: uuidv4(),
-    },
     titulo: {
         type: String,
         required: true,
@@ -23,8 +19,8 @@ const ocorrenciaSchema = new Schema({
     },
     localizacao: {
         type: {
-          type: String, // Don't do `{ location: { type: String } }`
-          enum: ['Point'], // 'location.type' must be 'Point'
+          type: String,
+          enum: ['Point'],
           required: true
         },
         coordinates: {

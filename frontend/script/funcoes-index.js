@@ -18,8 +18,8 @@ async function obterPontos() {
                 data: data,
                 hora: hora,
                 localizacao: {
-                    lat: elemento.localizacao.coordinates[0],
-                    lng: elemento.localizacao.coordinates[1],
+                    lat: elemento.localizacao.coordinates[1],
+                    lng: elemento.localizacao.coordinates[0],
                 },
             };
         });

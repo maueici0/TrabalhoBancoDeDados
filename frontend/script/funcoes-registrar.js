@@ -34,15 +34,17 @@ function addMarker(evt) {
 
 async function salvar() {
 
-    let data = new Date(document.getElementById('data-ocorrencia').value);
-    data.setDate(data.getDate() + 1);
+    let dataLocal = new Date(document.getElementById('data-ocorrencia').value);
+    const dataUTC = new Date(dataLocal.getTime() - dataLocal.getTimezoneOffset() * 60000);
+
+
+    console.log(dataUTC);
 
 
     const obj = {
         titulo: document.getElementById('titulo-ocorrencia').value,
         tipo: document.getElementById('tipo-ocorrencia').value,
-        data: data,
-        hora: document.getElementById('hora-ocorrencia').value,
+        data: dataUTC,
         localizacao: {
             type: "Point",
             coordinates: [

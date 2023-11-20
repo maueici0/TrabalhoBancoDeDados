@@ -8,7 +8,7 @@
 
   <link rel="stylesheet" type="text/css" href="../css/main.css" />
   <link rel="stylesheet" type="text/css" href="../css/registroAtualizar.css" />
-  <script type="module" src="../script/funcoes-registrar.js"></script>
+  <script type="module" src="../script/funcoes-atualizar.js"></script>
 </head>
 
 <body>
@@ -25,13 +25,15 @@
         <input class="campo-form" id="titulo-ocorrencia" type="text">
 
         <label class="texto-form" for="tipo-ocorrencia">Tipo da Ocorrência:</label>
-        <input class="campo-form" id="tipo-ocorrencia" type="text">
+        <select name="tipo-ocorrencia" id="tipo-ocorrencia" class="campo-form">
+          <option value="Outros">Outros</option>
+          <option value="Roubo">Roubo</option>
+          <option value="Acidente">Acidente</option>
+          <option value="Incêndio">Incêndio</option>
+        </select>
 
-        <label class="texto-form" for="data-ocorrencia">Data:</label>
-        <input class="campo-form" id="data-ocorrencia" type="date">
-
-        <label class="texto-form" for="hora-ocorrencia">Hora:</label>
-        <input class="campo-form" id="hora-ocorrencia" type="time">
+        <label class="texto-form" for="data-ocorrencia">Data e Hora:</label>
+        <input class="campo-form" id="data-ocorrencia" type="datetime-local">
 
         <span class="texto-form texto-mapa">Selecione no mapa o local da Ocorrência</span>
 
