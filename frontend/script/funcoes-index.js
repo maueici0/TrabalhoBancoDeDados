@@ -1,4 +1,5 @@
 let pontos = [];
+const center = { lat: -6.727427043380443, lng: -38.449082137663765 };
 
 async function obterPontos() {
     try {
@@ -67,7 +68,7 @@ function criarElementos() {
             const botaoAtualizarOcorrencia = document.createElement('button');
             botaoAtualizarOcorrencia.classList.add('botao-ocorrencia');
             botaoAtualizarOcorrencia.textContent = "Atualizar";
-            
+
             const linkAtualizar = document.createElement('a');
             linkAtualizar.href = `http://127.0.0.1:5500/frontend/html/atualizar.html?id=${element.id}`;
 
@@ -92,7 +93,7 @@ function criarElementos() {
 
             blocoConteudo.appendChild(divOcorrencia);
 
-            
+
 
             botaoExcluirOcorrencia.addEventListener("click", () => {
 
@@ -115,26 +116,82 @@ function criarElementos() {
     });
 }
 
-const botaoMudar = document.getElementById("botao-mudar");
-
-botaoMudar.addEventListener("click", () => {
-
-    if (mapaCalor.style.display === "none") {
-        mapaCalor.style.display = "inline";
-        mapaNormal.style.display = "none";
-    }
-    else {
-        mapaCalor.style.display = "none";
-        mapaNormal.style.display = "inline";
-    }
-
-});
-
 const mapaNormal = document.getElementById("map-normal");
 const mapaCalor = document.getElementById("map-calor");
+const mapaMaps = document.getElementById("map");
+const botaoMudar = document.getElementById("botao-mudar");
+
+let controller = 0;
+botaoMudar.addEventListener("click", () => {
+    controller +=1;
+    switch (controller) {
+        case 1:
+            mapaCalor.style.display = "inline";
+            mapaNormal.style.display = "none";
+            mapaMaps.style.display = "none";
+            break;
+        case 2:
+            mapaCalor.style.display = "none";
+            mapaNormal.style.display = "none";
+            mapaMaps.style.display = "block";
+            break;
+        default:
+            mapaCalor.style.display = "none";
+            mapaNormal.style.display = "inline";
+            mapaMaps.style.display = "none";
+            break;
+    }
+    if (controller === 3) {
+        controller = 0;
+    }
+});
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center,
+        zoom: 16,
+        minZoom: 14,
+        maxZoom: 18,
+        disableDefaultUI: true,
+    });
+}
+
+function listarPontos() {
+
+    pontos.forEach(element => {
+        let marker = new google.maps.Marker({
+            title: element.titulo,
+            position: new google.maps.LatLng(element.localizacao.lat, element.localizacao.lng),
+            map: map
+        });
+
+        (function () {
+
+            let contentString = '<div class="infoWindow">' +
+                '<h1 id="firstHeading" class="infoWindow-Titulo">' + element.titulo + '</h1>' +
+                '<div class="infoWindow-body">' +
+                '<p>' + element.tipo + ', <span class="infoWindow-data">'
+                + element.data + ' ' + element.hora + '</span></p>' +
+                '</div>' +
+                '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+        })();
+    });
+}
 
 window.addEventListener('load', async () => {
     await obterPontos();
     criarElementos();
+    listarPontos();
     mapaCalor.style.display = "none";
+    mapaMaps.style.display = "none";
 });
+
+window.initMap = initMap;
