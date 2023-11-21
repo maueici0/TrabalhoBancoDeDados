@@ -31,7 +31,6 @@ function addMarker(evt) {
     markerLng = marker.getPosition().lng();
 }
 
-
 async function salvar() {
 
     let dataLocal = new Date(document.getElementById('data-ocorrencia').value);
@@ -62,10 +61,37 @@ async function salvar() {
 
 }
 
+const botaoRecentralizar = document.getElementById("botao-recentralizar");
+botaoRecentralizar.addEventListener("click", () =>{
+    map.setCenter(center);
+    marker.setPosition(center);
+});
+
 const formulario = document.querySelector('.formulario-ocorrencia');
 formulario.addEventListener('submit', async (e) => {
     e.preventDefault();
     await salvar();
 });
 
+async function obterLocalizacaoUsuario() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (posicao) {
+                const latitude = posicao.coords.latitude;
+                const longitude = posicao.coords.longitude;
+                const novoCentro = new google.maps.LatLng(longitude, latitude);
+                map.setCenter(novoCentro);
+                marker.setPosition(novoCentro);
+            },
+            function (erro) {
+                console.error(`Erro ao obter localização: ${erro.message}`);
+            }
+        );
+    } else {
+        console.error('Geolocalização não suportada pelo navegador.');
+    }
+}
+window.addEventListener("load", async () => { 
+    await obterLocalizacaoUsuario(); 
+});
 window.initMap = initMap;

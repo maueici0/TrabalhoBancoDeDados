@@ -1,4 +1,4 @@
-const center = { lat: 0, lng: 0};
+const center = { lat: 0, lng: 0 };
 let map;
 let marker;
 let lat;
@@ -79,7 +79,11 @@ async function atualizar() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(obj)
-    }).then(response => { alert('Atualizado com sucesso') })
+    }).then(response => {
+        alert('Atualizado com sucesso');
+        const botaoCancelar = document.getElementById("botao-pagina");
+        botaoCancelar.textContent = "Voltar";
+    })
         .catch(error => alert('Falha ao atualizar!'));
 
 }
@@ -101,6 +105,8 @@ window.addEventListener('load', async () => {
     tipoOcorrencia.value = ponto.tipo;
 
     const dataOcorrencia = document.getElementById("data-ocorrencia");
+    const data = new Date(ponto.data).toISOString().slice(0, 16)
+    dataOcorrencia.setAttribute('value', data);
 
 });
 

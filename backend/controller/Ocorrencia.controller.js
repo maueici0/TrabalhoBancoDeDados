@@ -31,7 +31,6 @@ module.exports.deletarOcorrencia = async function (req, res) {
   }
 
 module.exports.obterOcorrencia = async function (req, res) {
-  console.log("aa");
   const ocorrencia = await Ocorrencia.findById(req.params.id);
   if (!ocorrencia) {
     res.status(404).send({ error: "Ocorrencia não encontrada" });
