@@ -10,13 +10,11 @@ let ponto;
 const urlCompleta = window.location.href;
 const partes = urlCompleta.split("=");
 const id = partes[1];
-console.log(id);
 
 async function obterPontos() {
     try {
         const response = await fetch(`http://localhost:3000/ocorrencias/${id}`);
         ponto = await response.json();
-        console.log(ponto.localizacao.coordinates);
         lat = ponto.localizacao.coordinates[0];
         lng = ponto.localizacao.coordinates[1];
         const novoCentro = new google.maps.LatLng(lng, lat);
@@ -45,8 +43,6 @@ function initMap() {
 
     map.addListener("click", (evt) => {
         addMarker(evt);
-        console.log(markerLat);
-        console.log(markerLng);
     });
 
 }
@@ -105,7 +101,6 @@ window.addEventListener('load', async () => {
     tipoOcorrencia.value = ponto.tipo;
 
     const dataOcorrencia = document.getElementById("data-ocorrencia");
-    console.log(ponto.data);
 
 });
 
