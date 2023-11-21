@@ -17,15 +17,35 @@
     <h1>Sistema de Registro de Ocorrências</h1>
 
     <div class="bloco-conteudo">
-
+      <!--  <div class="ocorrencia">
+        <div class="bloco info">
+          <p class="titulo-ocorrencia">Assalto de Moto</p>
+          <p class="tipo-ocorrencia">Assalto</p>
+        </div>
+        <div class="bloco data">
+          <p class="data-ocorrencia">12-02-2024</p>
+          <p class="hora-ocorrencia">12:00</p>
+        </div>
+        <div class="bloco botoes">
+          <button class="botao-ocorrencia">Atualizar</button>
+          <button class="botao-ocorrencia">Excluir</button>
+        </div>
+      </div>-->
     </div>
 
-    <a href="../html/registrar.html"><button id="botao-pagina">Registrar Ocorrencia</button></a>
+    <button class="botao" id="botao-mudar">Mudar Mapa</button>
+    <a href="../html/registrar.html"><button class="botao" id="botao-pagina">Registrar Ocorrencia</button></a>
 
   </div>
 
+  <div class="maps">
+    <div class="map" id="map"></div>
+    <iframe class="map" id="map-calor"
+      src="https://charts.mongodb.com/charts-project-0-wsyxw/embed/charts?id=655be95a-4b1c-4027-8e57-d2005d489e2a&maxDataAge=60&theme=light&autoRefresh=true"></iframe>
 
-  <div id="map"></div>
+    <iframe class="map" id="map-normal"
+      src="https://charts.mongodb.com/charts-project-0-wsyxw/embed/charts?id=655be595-7a14-4003-828c-ee526fa38638&maxDataAge=60&theme=light&autoRefresh=true"></iframe>
+  </div>
 
   <script src="https://maps.googleapis.com/maps/api/js?callback=initMap&v=weekly" defer></script>
 </body>

@@ -1,41 +1,35 @@
-const sequelize = require('../database/sequelize');
-const { DataTypes } = require('sequelize');
+const mongoose = require('../database/mongoose');
+const {Schema} = mongoose;
+const {v4: uuidv4} = require('uuid');
 
-const Ocorrencias = sequelize.define('Ocorrencias', {
-    id: {
-        type: DataTypes.UUID,
-        primaryKey: true, 
-        defaultValue: DataTypes.UUIDV4
-    },
+const ocorrenciaSchema = new Schema({
     titulo: {
-        type: DataTypes.STRING, 
-        allowNull: false
+        type: String,
+        required: true,
+        unique: true,
     },
     tipo: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: String,
+        enum: ['Roubo', 'Furto', 'Acidente', 'Incêndio', 'Outros'],
+        required: true,
     },
     data: {
-        type: DataTypes.DATEONLY,
-        allowNull: false
-    },
-    hora: {
-        type: DataTypes.TIME,
-        allowNull: false
+        type: Date,
+        required: true,
     },
     localizacao: {
-        type: DataTypes.GEOMETRY,
-        allowNull: false
-    }
-}, {});
+        type: {
+          type: String,
+          enum: ['Point'],
+          required: true
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
+      }
+});
 
-async function sincronizar() {
-    try {
-        await Ocorrencias.sync();
-        console.log('Tabela Ocorrencias sincronizada!');
-    } catch (error) {
-        console.log(`Erro na conexão: ${error}`);
-    }
-} sincronizar();
+const Ocorrencias = mongoose.model('Ocorrencias', ocorrenciaSchema);
 
 module.exports = Ocorrencias;

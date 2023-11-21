@@ -28,6 +28,11 @@
     padding: 0;
 }
 
+.info {
+    max-width: 120px;
+    min-width: 120px;
+}
+
 .data{
     align-items: center;
 }
@@ -43,6 +48,25 @@
 .tipo-ocorrencia {
     font-size: 0.9rem;
     padding-left: 15px;
+}
+
+.botao-ocorrencia {
+    box-sizing: border-box;
+    padding: 5px 15px;
+    background: #919191;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: .9rem;
+    border: none;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.botao-ocorrencia:hover {
+    background: #afabab;
+    transition: 0.5s;
 }
 
 .infoWindow-Titulo {
@@ -68,3 +92,14 @@
     padding: 0;
 }
 
+.map {
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+.maps {
+    height: 100%;
+    width: 60%;
+    border: none;
+}

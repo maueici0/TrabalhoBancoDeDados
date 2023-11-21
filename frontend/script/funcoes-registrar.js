@@ -31,22 +31,22 @@ function addMarker(evt) {
     markerLng = marker.getPosition().lng();
 }
 
-
 async function salvar() {
 
-    let data = new Date(document.getElementById('data-ocorrencia').value);
-    data.setDate(data.getDate() + 1);
-
+    let dataLocal = new Date(document.getElementById('data-ocorrencia').value);
+    const dataUTC = new Date(dataLocal.getTime() - dataLocal.getTimezoneOffset() * 60000);
 
     const obj = {
         titulo: document.getElementById('titulo-ocorrencia').value,
         tipo: document.getElementById('tipo-ocorrencia').value,
-        data: data,
-        hora: document.getElementById('hora-ocorrencia').value,
-        localizacao: [
-            markerLat,
-            markerLng
-        ]
+        data: dataUTC,
+        localizacao: {
+            type: "Point",
+            coordinates: [
+                markerLng,
+                markerLat
+            ]
+        }
 
     };
     fetch("http://localhost:3000/ocorrencias", {
@@ -61,10 +61,37 @@ async function salvar() {
 
 }
 
+const botaoRecentralizar = document.getElementById("botao-recentralizar");
+botaoRecentralizar.addEventListener("click", () =>{
+    map.setCenter(center);
+    marker.setPosition(center);
+});
+
 const formulario = document.querySelector('.formulario-ocorrencia');
 formulario.addEventListener('submit', async (e) => {
     e.preventDefault();
     await salvar();
 });
 
+async function obterLocalizacaoUsuario() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (posicao) {
+                const latitude = posicao.coords.latitude;
+                const longitude = posicao.coords.longitude;
+                const novoCentro = new google.maps.LatLng(longitude, latitude);
+                map.setCenter(novoCentro);
+                marker.setPosition(novoCentro);
+            },
+            function (erro) {
+                console.error(`Erro ao obter localização: ${erro.message}`);
+            }
+        );
+    } else {
+        console.error('Geolocalização não suportada pelo navegador.');
+    }
+}
+window.addEventListener("load", async () => { 
+    await obterLocalizacaoUsuario(); 
+});
 window.initMap = initMap;
