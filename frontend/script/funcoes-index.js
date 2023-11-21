@@ -67,12 +67,17 @@ function criarElementos() {
             const botaoAtualizarOcorrencia = document.createElement('button');
             botaoAtualizarOcorrencia.classList.add('botao-ocorrencia');
             botaoAtualizarOcorrencia.textContent = "Atualizar";
+            
+            const linkAtualizar = document.createElement('a');
+            linkAtualizar.href = `http://127.0.0.1:5500/frontend/html/atualizar.html?id=${element.id}`;
 
             const botaoExcluirOcorrencia = document.createElement('button');
             botaoExcluirOcorrencia.classList.add('botao-ocorrencia');
             botaoExcluirOcorrencia.textContent = "Excluir";
 
-            blocoBotoes.appendChild(botaoAtualizarOcorrencia);
+            linkAtualizar.appendChild(botaoAtualizarOcorrencia);
+
+            blocoBotoes.appendChild(linkAtualizar);
             blocoBotoes.appendChild(botaoExcluirOcorrencia);
 
             blocoData.appendChild(dataOcorrencia);
@@ -86,6 +91,8 @@ function criarElementos() {
             divOcorrencia.appendChild(blocoBotoes);
 
             blocoConteudo.appendChild(divOcorrencia);
+
+            
 
             botaoExcluirOcorrencia.addEventListener("click", () => {
 

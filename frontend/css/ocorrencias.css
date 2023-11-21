@@ -92,3 +92,14 @@
     padding: 0;
 }
 
+.map {
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+.maps {
+    height: 100%;
+    width: 60%;
+    border: none;
+}
