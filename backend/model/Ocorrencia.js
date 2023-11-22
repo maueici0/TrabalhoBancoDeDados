@@ -6,7 +6,6 @@ const ocorrenciaSchema = new Schema({
     titulo: {
         type: String,
         required: true,
-        unique: true,
     },
     tipo: {
         type: String,
