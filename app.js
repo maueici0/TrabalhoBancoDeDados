@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 const cors = require('cors');
+const conectar = require('./backend/database/redis');
 
 app.use(cors());
 

@@ -1,6 +1,5 @@
 const Ocorrencia = require('../model/Ocorrencia');
-const redis = require('redis');
-const client = redis.createClient();
+const client = require('../database/redis');
 
 module.exports.listarOcorrencia = async function (req, res) {
   const ocorrencias = await Ocorrencia.find({});
@@ -51,4 +50,39 @@ module.exports.obterOcorrencia = async function (req, res) {
     return;
   }
   res.status(200).send(ocorrencia);
+}
+
+// Função para atualizar a contagem em tempo real por tipo
+async function atualizarContagemPorTipo(tipo, incremento = 1) {
+  try {
+    const cacheKey = `contagem_por_tipo:${tipo}`;
+    const contagemAtual = await client.incrby(cacheKey, incremento);
+    // Define uma expiração para a chave se ela não existir
+    if (incremento > 0) {
+      await client.expire(cacheKey, 3600); // Expira em 1 hora
+    }
+    return contagemAtual;
+  } catch (error) {
+    console.error("Erro ao atualizar contagem por tipo:", error);
+    throw error;
+  }
+}
+
+// Função para obter a contagem em tempo real por tipo
+async function obterContagemPorTipo() {
+  try {
+    const tipos = ['Roubo', 'Furto', 'Acidente', 'Incêndio', 'Outros'];
+    const contagem = {};
+    
+    for (const tipo of tipos) {
+      const cacheKey = `contagem_por_tipo:${tipo}`;
+      const valor = await client.get(cacheKey) || 0;
+      contagem[tipo] = parseInt(valor, 10);
+    }
+
+    return contagem;
+  } catch (error) {
+    console.error("Erro ao obter contagem por tipo:", error);
+    throw error;
+  }
 }
