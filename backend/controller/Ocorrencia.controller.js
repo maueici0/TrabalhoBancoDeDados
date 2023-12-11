@@ -3,20 +3,12 @@ const client = require('../database/redis');
 
 module.exports.listarOcorrencia = async function (req, res) {
   const ocorrencias = await Ocorrencia.find({});
-  res.status(200).send(ocorrencias);
-
-  //Recuperar a contagem em tempo real por tipo
-  const contagemPorTipo = await obterContagemPorTipo();
-  res.status(200).send({ ocorrencias, contagemPorTipo });
+  res.status(200).send(ocorrencias, obterContagemPorTipo);
 };
 
 module.exports.salvarOcorrencia = async function (req, res) {
   const ocorrencia = await Ocorrencia.create(req.body);
-  res.status(201).send(ocorrencia);
-
-  //Atualizar contagem em tempo real ao adicionar nova ocorrencia
-  await atualizarContagemPorTipo (req.body.tipo);
-  res.status(201).send(ocorrencia);
+  res.status(201).send(ocorrencia, atualizarContagemPorTipo(ocorrencia.tipo));
 };
 
 module.exports.deletarOcorrencia = async function (req, res) {
@@ -25,15 +17,10 @@ module.exports.deletarOcorrencia = async function (req, res) {
     res.status(404).send({ error: "Ocorrencia não encontrada" });
     return;
   }
-  res.status(200).send({ message: "Ocorrencia deletada com sucesso" });
-
-  //Atualizar contagem em tempo real ao deletar ocorrencia
-  await atualizarContagemPorTipo (ocorrencia.tipo, -1);
-  res.status(200).send({ message: "Ocorrencia deletada com sucesso" });
+  res.status(201).send(atualizarContagemPorTipo(ocorrencia.tipo));
 };
 
-  module.exports.atualizarOcorrencia = async function (req, res) {
-    const ocorrencia = await Ocorrencia.findById(req.params.id);
+module.exports.atualizarOcorrencia = async function (req, res) {    const ocorrencia = await Ocorrencia.findById(req.params.id);
     if (!ocorrencia) {
       res.status(404).send({ error: "Ocorrencia não encontrada" });
       return;
@@ -53,8 +40,9 @@ module.exports.obterOcorrencia = async function (req, res) {
 }
 
 // Função para atualizar a contagem em tempo real por tipo
-async function atualizarContagemPorTipo(tipo, incremento = 1) {
+export async function atualizarContagemPorTipo(tipo) {
   try {
+    const incremento = 1;
     const cacheKey = `contagem_por_tipo:${tipo}`;
     const contagemAtual = await client.incrby(cacheKey, incremento);
     // Define uma expiração para a chave se ela não existir
@@ -69,7 +57,7 @@ async function atualizarContagemPorTipo(tipo, incremento = 1) {
 }
 
 // Função para obter a contagem em tempo real por tipo
-async function obterContagemPorTipo() {
+export async function obterContagemPorTipo() {
   try {
     const tipos = ['Roubo', 'Furto', 'Acidente', 'Incêndio', 'Outros'];
     const contagem = {};
