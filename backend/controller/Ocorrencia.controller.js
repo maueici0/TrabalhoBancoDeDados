@@ -56,22 +56,19 @@ module.exports.atualizarOcorrencia = async function (req, res) {
   }
   const retorno = await Ocorrencia.findByIdAndUpdate(
     req.params.id, req.body, { new: true });
+  client.setEx(`ocorrencia:${req.params.id}`, 3600, JSON.stringify(retorno));
   res.status(200).send(retorno);
 }
 
 module.exports.obterOcorrencia = async function (req, res) {
-  const cacheKey = `ocorrencia:${req.params.id}`;
-  
+  const cacheKey = `ocorrencia:${req.params.id}`;  
   // Verifica se os dados estão no cache
-  client.get(cacheKey, async (error, cachedData) => {
-    if (error) {
-      console.error('Erro ao ler do cache Redis:', error);
-    }
-
-    if (cachedData) {
+  client.get(cacheKey).then(async (cachedData) => {
+    if (cachedData != null) {
       // Cache hit
       const ocorrencia = JSON.parse(cachedData);
       res.status(200).send(ocorrencia);
+      return 
     } else {
       // Cache miss, busca dados no banco de dados
       const ocorrencia = await Ocorrencia.findById(req.params.id);
@@ -79,11 +76,12 @@ module.exports.obterOcorrencia = async function (req, res) {
         res.status(404).send({ error: "Ocorrência não encontrada" });
         return;
       }
-
       // Atualiza o cache com os dados recuperados
       client.setEx(cacheKey, 3600, JSON.stringify(ocorrencia)); // Define o tempo de expiração do cache (por exemplo, 1 hora)
-
       res.status(200).send(ocorrencia);
     }
-  });
+  }).catch((error) => {
+    console.error('Erro ao buscar dados no Redis:', error);
+    res.status(500).send({ error: 'Erro interno do servidor ao buscar dados no Redis' });
+  })
 }
