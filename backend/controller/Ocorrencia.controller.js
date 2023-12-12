@@ -2,13 +2,40 @@ const Ocorrencia = require('../model/Ocorrencia');
 const client = require('../database/redis');
 
 module.exports.listarOcorrencia = async function (req, res) {
-  const ocorrencias = await Ocorrencia.find({});
-  res.status(200).send(ocorrencias, obterContagemPorTipo);
+  try {
+    if (req.cacheData) {
+      console.log('Dados do cache disponíveis na rota:', req.cacheData);
+      return res.json(req.cacheData);
+    }
+
+    const lista = await Ocorrencia.find();
+
+    // Atualizar o cache com os dados do MongoDB
+    const cacheKey = '/ocorrencia';
+    client.setEx(cacheKey, 3600, JSON.stringify(lista));
+
+    res.json(lista);
+  } catch (err) {
+    console.error('Erro ao buscar dados do MongoDB:', err);
+    res.status(500).json({ error: 'Erro ao buscar dados do MongoDB' });
+  }
 };
 
 module.exports.salvarOcorrencia = async function (req, res) {
-  const ocorrencia = await Ocorrencia.create(req.body);
-  res.status(201).send(ocorrencia, atualizarContagemPorTipo(ocorrencia.tipo));
+  try {
+    // Cria uma nova ocorrência no banco de dados
+    const ocorrencia = await Ocorrencia.create(req.body);
+
+    // Adiciona a ocorrência ao cache
+    const cacheKey = `ocorrencia:${ocorrencia._id}`;
+    client.setEx(cacheKey, 3600, JSON.stringify(ocorrencia));
+
+    // Responde com a ocorrência criada
+    res.status(201).send(ocorrencia);
+  } catch (error) {
+    console.error('Erro ao salvar a ocorrência:', error);
+    res.status(500).send({ error: 'Erro interno do servidor ao salvar a ocorrência' });
+  }
 };
 
 module.exports.deletarOcorrencia = async function (req, res) {
@@ -17,60 +44,46 @@ module.exports.deletarOcorrencia = async function (req, res) {
     res.status(404).send({ error: "Ocorrencia não encontrada" });
     return;
   }
-  res.status(201).send(atualizarContagemPorTipo(ocorrencia.tipo));
+  client.del(`ocorrencia:${req.params.id}`);
+  res.status(200).send({ message: "Ocorrencia deletada com sucesso" });
 };
 
-module.exports.atualizarOcorrencia = async function (req, res) {    const ocorrencia = await Ocorrencia.findById(req.params.id);
-    if (!ocorrencia) {
-      res.status(404).send({ error: "Ocorrencia não encontrada" });
-      return;
-    }
-    const retorno = await Ocorrencia.findByIdAndUpdate(
-      req.params.id, req.body, { new: true });
-    res.status(200).send(retorno);
-  }
-
-module.exports.obterOcorrencia = async function (req, res) {
+module.exports.atualizarOcorrencia = async function (req, res) {
   const ocorrencia = await Ocorrencia.findById(req.params.id);
   if (!ocorrencia) {
     res.status(404).send({ error: "Ocorrencia não encontrada" });
     return;
   }
-  res.status(200).send(ocorrencia);
+  const retorno = await Ocorrencia.findByIdAndUpdate(
+    req.params.id, req.body, { new: true });
+  res.status(200).send(retorno);
 }
 
-// Função para atualizar a contagem em tempo real por tipo
-export async function atualizarContagemPorTipo(tipo) {
-  try {
-    const incremento = 1;
-    const cacheKey = `contagem_por_tipo:${tipo}`;
-    const contagemAtual = await client.incrby(cacheKey, incremento);
-    // Define uma expiração para a chave se ela não existir
-    if (incremento > 0) {
-      await client.expire(cacheKey, 3600); // Expira em 1 hora
-    }
-    return contagemAtual;
-  } catch (error) {
-    console.error("Erro ao atualizar contagem por tipo:", error);
-    throw error;
-  }
-}
-
-// Função para obter a contagem em tempo real por tipo
-export async function obterContagemPorTipo() {
-  try {
-    const tipos = ['Roubo', 'Furto', 'Acidente', 'Incêndio', 'Outros'];
-    const contagem = {};
-    
-    for (const tipo of tipos) {
-      const cacheKey = `contagem_por_tipo:${tipo}`;
-      const valor = await client.get(cacheKey) || 0;
-      contagem[tipo] = parseInt(valor, 10);
+module.exports.obterOcorrencia = async function (req, res) {
+  const cacheKey = `ocorrencia:${req.params.id}`;
+  
+  // Verifica se os dados estão no cache
+  client.get(cacheKey, async (error, cachedData) => {
+    if (error) {
+      console.error('Erro ao ler do cache Redis:', error);
     }
 
-    return contagem;
-  } catch (error) {
-    console.error("Erro ao obter contagem por tipo:", error);
-    throw error;
-  }
+    if (cachedData) {
+      // Cache hit
+      const ocorrencia = JSON.parse(cachedData);
+      res.status(200).send(ocorrencia);
+    } else {
+      // Cache miss, busca dados no banco de dados
+      const ocorrencia = await Ocorrencia.findById(req.params.id);
+      if (!ocorrencia) {
+        res.status(404).send({ error: "Ocorrência não encontrada" });
+        return;
+      }
+
+      // Atualiza o cache com os dados recuperados
+      client.setEx(cacheKey, 3600, JSON.stringify(ocorrencia)); // Define o tempo de expiração do cache (por exemplo, 1 hora)
+
+      res.status(200).send(ocorrencia);
+    }
+  });
 }
