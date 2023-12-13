@@ -1,18 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Lato', sans-serif;
     height: 100vh;
     margin: 0;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    color: #463f3a;
 }
 
 .main {
     box-sizing: border-box;
-    background-color: #d9d9d9;
+    background-color: #f4f3ee;
     height: 100vh;
     max-height: 100vh;
     width: 40%;
@@ -25,7 +27,9 @@ body {
 }
 
 h1 {
+    font-weight: 900;
     margin: 0;
+    font-size: 2.5rem;
 }
 
 .bloco-conteudo {
@@ -37,11 +41,10 @@ h1 {
 
 .botao {
     box-sizing: border-box;
-    padding: 10px 30px;
-    background: #919191;
+    padding: 5px 20px;
+    background: #8a817c;
     border-radius: 3px;
     text-decoration: none;
-    color: #000;
     font-weight: bold;
     font-size: 1rem;
     border: none;
@@ -50,6 +53,6 @@ h1 {
 }
 
 .botao:hover {
-    background: #afabab;
+    background: #bcb8b1;
     transition: 0.5s;
 }

@@ -11,7 +11,6 @@
 }
 
 .texto-form {
-    padding-left: 20px;
     font-weight: bold;
 }
 
@@ -31,13 +30,13 @@
 }
 
 #botao-enviar {
+    display: inline-block;
     box-sizing: border-box;
-    padding: 5px 30px;
+    padding: 5px 20px;
     height: 35px;
-    background: #919191;
+    background: #8a817c;
     border-radius: 3px;
     text-decoration: none;
-    color: #000;
     cursor: pointer;
     font-weight: bold;
     font-size: 1rem;
@@ -47,7 +46,7 @@
 }
 
 #botao-enviar:hover {
-    background: #afabab;
+    background: #bcb8b1;
     transition: 0.5s;
 }
 
