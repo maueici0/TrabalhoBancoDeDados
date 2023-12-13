@@ -47,17 +47,17 @@
 
 .tipo-ocorrencia {
     font-size: 0.9rem;
-    padding-left: 15px;
+    padding-left: 0px;
 }
 
 .botao-ocorrencia {
+    display: inline-block;
     box-sizing: border-box;
-    padding: 5px 15px;
-    background: #919191;
+    padding: 5px 20px;
+    background: #8a817c;
     border-radius: 3px;
     text-decoration: none;
-    color: #000;
-    font-weight: bold;
+    font-weight: 700;
     font-size: .9rem;
     border: none;
     cursor: pointer;
@@ -65,7 +65,7 @@
 }
 
 .botao-ocorrencia:hover {
-    background: #afabab;
+    background: #bcb8b1;
     transition: 0.5s;
 }
 
